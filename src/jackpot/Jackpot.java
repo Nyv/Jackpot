@@ -20,10 +20,9 @@ public class Jackpot {
     double premio=0;
     double saldo=0;
     double deposito=1000;
-    Random numAleatorio = new Random();
-    int nombreImagen[] = new int[4];
+    int nombreImagen[] = new int[3];
     NumberFormat formato = NumberFormat.getCurrencyInstance();
-    ImageIcon imagen=new ImageIcon();
+    
     //métodos
     //*************************************************************************
     //tirada valida
@@ -50,9 +49,9 @@ public class Jackpot {
         return formato.format(premio);
     }
     //*************************************************************************
-    //Conocer el saldo
-    public double getPremio(){
-        return premio;
+    //deposito
+    public double getDeposito(){
+        return deposito;
     }
     //*************************************************************************
     //Introducción de monedas
@@ -74,52 +73,22 @@ public class Jackpot {
         saldo -= 0.50;
     }
     //*************************************************************************
+    //jugar
+    public double jugar(){
+        Random random = new Random();
+        for (int i = 0; i < 3; i++) {
+            nombreImagen[i] = random.nextInt(5);
+        }
+        this.getTirada();
+        premio = premios();
+        saldo += premio;
+        return premio;
+    }
+    //*************************************************************************
     //imagenes al azar
-    public ImageIcon setImagenes(){
-        //Asignar valores
-        for(int i=0;i<nombreImagen.length;i++){
-            nombreImagen[i] = numAleatorio.nextInt(5);
-        }
-        for(int v=0;v<nombreImagen.length;v++){
-            imagen = new ImageIcon(getClass().getResource("../imagenes/"+ nombreImagen[v] + ".png"));
-            //premios
-            if(nombreImagen[0]==0){
-                premio = 1.00;
-                saldo += 1.00;
-            }
-            if(nombreImagen[0]==0 && nombreImagen[1]==0){
-                premio = 5.00;
-                saldo += 5.00;
-            }
-            if(nombreImagen[0]==1 && nombreImagen[1]==1 && nombreImagen[2]==4){
-                premio = 10.00;
-                saldo += 10.00;
-            }
-            if(nombreImagen[0]==1 && nombreImagen[1]==1 && nombreImagen[2]==1){
-                premio = 10.00;
-                saldo += 10.00;
-            }
-            if(nombreImagen[0]==2 && nombreImagen[1]==2 && nombreImagen[2]==2){
-                premio = 15.00;
-                saldo += 15.00;
-            }
-            if(nombreImagen[0]==2 && nombreImagen[1]==2 && nombreImagen[2]==4){
-                premio = 15.00;
-                saldo += 15.00;
-            }
-            if(nombreImagen[0]==3 && nombreImagen[1]==3 && nombreImagen[2]==3){
-                premio = 20.00;
-                saldo += 15.00;
-            }
-            if(nombreImagen[0]==3 && nombreImagen[1]==3 && nombreImagen[2]==4){
-                premio = 20.00;
-                saldo += 20.00;
-            }
-            if(nombreImagen[0]==4 && nombreImagen[1]==4 && nombreImagen[2]==4){
-                premio = 100.00;
-                saldo += 100.00;
-            }
-        }
+    public ImageIcon setImagenes(int indice){
+            ImageIcon imagen=new ImageIcon();
+            imagen = new ImageIcon(getClass().getResource("../imagenes/"+ nombreImagen[indice] + ".png"));
         return imagen;
     }
     //*************************************************************************
@@ -133,13 +102,36 @@ public class Jackpot {
         jbutton.setEnabled(true);
     }    
     //*************************************************************************
-    
+     //premios
+    private int premios(){
+        if (nombreImagen[0] == 0 && nombreImagen[1] == 0) {
+            return 5;
+        } else if (nombreImagen[0] == 0) {
+            return 1;
+        } else if (nombreImagen[0] == 1 && nombreImagen[1] == 1 && nombreImagen[2] == 1) {
+            return 10;
+        } else if (nombreImagen[0] == 1 && nombreImagen[1] == 1 && nombreImagen[2] == 4) {
+            return 10;
+        } else if (nombreImagen[0] == 2 && nombreImagen[1] == 2 && nombreImagen[2] == 2) {
+            return 15;
+        } else if (nombreImagen[0] == 2 && nombreImagen[1] == 2 && nombreImagen[2] == 4) {
+            return 15;   
+        } else if (nombreImagen[0] == 3 && nombreImagen[1] == 3 && nombreImagen[2] == 3) {
+            return 20;
+        } else if (nombreImagen[0] == 3 && nombreImagen[1] == 3 && nombreImagen[2] == 4) {
+            return 20;
+        } else if (nombreImagen[0] == 4 && nombreImagen[1] == 4 && nombreImagen[2] == 4) {
+            return 100;
+        } else {
+            return 0;
+        }        
+    }
     //*************************************************************************
     //Cobrar
     public void getDinerito(){
+        deposito -= saldo;
         saldo=0;
         premio=0;
-        deposito -= saldo;
     }
     //*************************************************************************
     //deposito a 0

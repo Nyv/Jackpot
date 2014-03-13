@@ -15,10 +15,8 @@ public class Main extends javax.swing.JFrame {
         setLocationByPlatform(true);
         jLabelSaldo.setText(jackpot.getSaldoSTR());
         jackpot.depositoEmpty(this);
-        if(jackpot.getSaldo() <= 0){
-            jackpot.desactivar(jButtonPalanca);
-            jackpot.desactivar(jButtonCobrar);
-        }
+        jackpot.desactivar(jButtonPalanca);
+        jackpot.desactivar(jButtonCobrar);
     }
     
    /**
@@ -266,17 +264,22 @@ public class Main extends javax.swing.JFrame {
 
     private void jButtonPalancaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPalancaActionPerformed
         if(jackpot.tiradaValida()){
-            jackpot.getTirada();
+            jackpot.jugar();
             //mostrar imagenes
-            jLabelImagen1.setIcon(jackpot.setImagenes());
-            jLabelImagen2.setIcon(jackpot.setImagenes());
-            jLabelImagen3.setIcon(jackpot.setImagenes());
+            jLabelImagen1.setIcon(jackpot.setImagenes(0));
+            jLabelImagen2.setIcon(jackpot.setImagenes(1));
+            jLabelImagen3.setIcon(jackpot.setImagenes(2));
             //Mostrar saldo
             jLabelPremio.setText(jackpot.getPremioSTR());
             jLabelSaldo.setText(jackpot.getSaldoSTR());
+            if(jackpot.getSaldo()<=0){
+                jackpot.desactivar(jButtonPalanca);
+                jackpot.desactivar(jButtonCobrar);
+            }
         }else{
             JOptionPane.showMessageDialog(this, "Debe introducir una moneda, el saldo es menor de 0,50€", "No hay saldo", JOptionPane.INFORMATION_MESSAGE);
         }
+        System.out.println(jackpot.getDeposito());
     }//GEN-LAST:event_jButtonPalancaActionPerformed
 
     private void jButton50centActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton50centActionPerformed
@@ -284,6 +287,7 @@ public class Main extends javax.swing.JFrame {
         jLabelSaldo.setText(jackpot.getSaldoSTR());
         jackpot.activar(jButtonPalanca);
         jackpot.activar(jButtonCobrar);
+        System.out.println(jackpot.getDeposito());
     }//GEN-LAST:event_jButton50centActionPerformed
 
     private void jButton1euroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1euroActionPerformed
@@ -291,6 +295,7 @@ public class Main extends javax.swing.JFrame {
         jLabelSaldo.setText(jackpot.getSaldoSTR());
         jackpot.activar(jButtonPalanca);
         jackpot.activar(jButtonCobrar);
+        System.out.println(jackpot.getDeposito());
     }//GEN-LAST:event_jButton1euroActionPerformed
 
     private void jButton2euroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2euroActionPerformed
@@ -298,11 +303,15 @@ public class Main extends javax.swing.JFrame {
         jLabelSaldo.setText(jackpot.getSaldoSTR());
         jackpot.activar(jButtonPalanca);
         jackpot.activar(jButtonCobrar);
+        System.out.println(jackpot.getDeposito());
     }//GEN-LAST:event_jButton2euroActionPerformed
 
     private void jButtonCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCobrarActionPerformed
         jackpot.getDinerito();
+        jackpot.activar(jButtonPalanca);
+        jackpot.activar(jButtonCobrar);
         jLabelSaldo.setText(jackpot.getSaldoSTR());
+        System.out.println(jackpot.getDeposito());
     }//GEN-LAST:event_jButtonCobrarActionPerformed
 
     /**
