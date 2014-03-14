@@ -1,6 +1,8 @@
 package jackpot;
 
+import java.text.DateFormat;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class Main extends javax.swing.JFrame {
@@ -11,6 +13,7 @@ public class Main extends javax.swing.JFrame {
     Jackpot jackpot = new Jackpot();
     public Main() {
         initComponents();
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setIconImage(new ImageIcon(getClass().getResource("/imagenes/3.png")).getImage()); 
         setLocationByPlatform(true);
         jLabelSaldo.setText(jackpot.getSaldoSTR());
@@ -50,6 +53,11 @@ public class Main extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Jackpot");
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jButtonPalanca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/palanca.png"))); // NOI18N
         jButtonPalanca.addActionListener(new java.awt.event.ActionListener() {
@@ -272,6 +280,7 @@ public class Main extends javax.swing.JFrame {
             //Mostrar saldo
             jLabelPremio.setText(jackpot.getPremioSTR());
             jLabelSaldo.setText(jackpot.getSaldoSTR());
+            System.out.println(jackpot.getfecha());
             if(jackpot.getSaldo()<=0){
                 jackpot.desactivar(jButtonPalanca);
                 jackpot.desactivar(jButtonCobrar);
@@ -313,6 +322,10 @@ public class Main extends javax.swing.JFrame {
         jLabelSaldo.setText(jackpot.getSaldoSTR());
         System.out.println(jackpot.getDeposito());
     }//GEN-LAST:event_jButtonCobrarActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        Jackpot.cerrarVentana(this);
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

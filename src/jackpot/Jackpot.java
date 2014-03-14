@@ -5,10 +5,14 @@
 package jackpot;
 
 import java.awt.Component;
+import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,8 +26,19 @@ public class Jackpot {
     double deposito=1000;
     int nombreImagen[] = new int[3];
     NumberFormat formato = NumberFormat.getCurrencyInstance();
-    
+    Calendar calendar = Calendar.getInstance();
+    String muestra="";
+    ArrayList<String> listaHistorial = new ArrayList();
+    ArrayList<Jackpot> listaJack = new ArrayList();
     //métodos
+    //*************************************************************************
+    //constructores
+    public Jackpot(){
+        double premio=premios();
+        double saldo=getSaldo();
+        double deposito=getDeposito();
+        Calendar calendar = Calendar.getInstance();
+    }
     //*************************************************************************
     //tirada valida
     public boolean tiradaValida(){
@@ -82,6 +97,7 @@ public class Jackpot {
         this.getTirada();
         premio = premios();
         saldo += premio;
+        this.guardarHistorial();
         return premio;
     }
     //*************************************************************************
@@ -103,7 +119,7 @@ public class Jackpot {
     }    
     //*************************************************************************
      //premios
-    private int premios(){
+    public int premios(){
         if (nombreImagen[0] == 0 && nombreImagen[1] == 0) {
             return 5;
         } else if (nombreImagen[0] == 0) {
@@ -133,6 +149,18 @@ public class Jackpot {
         saldo=0;
         premio=0;
     }
+    //****************************************************************
+    //Guardar
+    public void guardarHistorial(){
+        listaHistorial.add(this.toString());
+    }
+    //****************************************************************
+    //mostrar por salida estándar
+    public void mostrarHistorial(){
+        for(int i=0;i<listaHistorial.size();i++){
+            muestra = listaHistorial.get(i);
+        }
+    }
     //*************************************************************************
     //deposito a 0
     public void depositoEmpty(Component parent){
@@ -140,4 +168,37 @@ public class Jackpot {
             JOptionPane.showMessageDialog(parent, "El depósito está vacío. Pase por caja", "Depósito vacío", JOptionPane.INFORMATION_MESSAGE);
         }
     }
+    //*************************************************************************
+    //Cerrar la ventana
+    public static void cerrarVentana(JFrame jframe){
+        int respuesta = JOptionPane.showConfirmDialog(jframe, "¿Desea apagar la máquina?", "Apagando", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+        if (respuesta == JOptionPane.OK_OPTION) {
+            //Aquí lo que haya que ejecutar al aceptar el cierre de la ventana (volcar al xml)
+            //parserXML.createXML(listaJack, "documento");
+            jframe.dispose();
+        } else {
+            //Aquí lo que haya que ejecutar al cancelar el cierre de la ventana (no cerrar y mostrar por system.out.print())
+            //this.mostrarHistorial();
+        }
+    }
+    //*************************************************************************
+    //fecha
+    public void fecha(){
+        System.out.println(""+calendar.get(Calendar.DATE)+"/"+calendar.get(Calendar.MONTH)
+    +"/"+calendar.get(Calendar.YEAR)+" "+calendar.get(Calendar.HOUR)
+    +":"+calendar.get(Calendar.MINUTE)+":"+calendar.get(Calendar.SECOND)
+    +":"+calendar.get(Calendar.MILLISECOND));
+    }
+    public Calendar getfecha(){
+        Calendar cal1= Calendar.getInstance();
+        return cal1;
+    }
+    //*************************************************************************
+    //Pasar a String
+    public String toString(){
+        String mensaje = "Fecha y hora: " + this.getfecha() + "\nSaldo : " + this.getSaldoSTR() + "\nDepósito: " + this.deposito + "\nPremios: " + this.getPremioSTR() + "\n";
+        return mensaje;
+    }
+    //*************************************************************************
+    
 }
